@@ -1,0 +1,30 @@
+<div><%= @username %></div>
+<br />
+<table>
+	<thead>
+		<tr>
+			<td>Date</td>
+			<td>Project</td>
+			<td>Begin</td>
+			<td>End</td>
+			<td>Total</td>
+			<td>Activity</td>
+			<td>Issue</td>
+			<td>Obs</td>
+		</tr>
+	</thead>
+	<tbody>
+		<% @timesheets.each do |time| %>
+			<tr>
+				<td><%= time.date.strftime('%d/%m/%Y') %></td>
+				<td><%= time.projectname %></td>
+				<td><%= time.begin.strftime('%H:%M') %></td>
+				<td><%= time.end.strftime('%H:%M') %></td>
+				<td><%= "%02d" % ((time.total.to_i)/60) %>:<%= "%02d" % (time.total.to_i.modulo(60)) %></td>
+				<td><%= time.activity %></td>
+				<td><%= time.issuenumber %></td>
+				<td><%= time.obs %></td>
+			</tr>
+		<% end %>
+	</tbody>
+</table>

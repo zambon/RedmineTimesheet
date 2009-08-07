@@ -1,0 +1,30 @@
+<table class="report_table">
+	<thead>
+		<tr class="header_row">
+			<% @columns.each do |column| %>
+				<th class="header_cell"><%= column %></th>
+			<% end %>
+			<th class="hours">Total (Hours)</th>
+			<th class="hours"></th>
+		</tr>
+	</thead>
+	<tbody>
+		<% if(@results != nil) then %>
+			<% @results.each do |row| %>
+				<tr>
+					<%  @columns.each do |column| %>
+						<td class="report_td">
+							<%= row[column] %>
+						</td>
+					<% end %>
+					<td class="hours"><%= row.Hours.to_f %> </td>
+					<td class="hours"><%= row.Hours.to_f * 100/@total %> % </td>
+				</tr>
+			<% end %>
+			<tr class="report_tr_total">
+				<% if(@columns.length > 0) %><td>Total</td><% end %>
+				<td colspan="<%= @columns.length %>" class="report_td_total"><%= @total %></td> 
+			</tr>
+		<% end %>
+	</tbody>
+</table>

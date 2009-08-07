@@ -1,0 +1,147 @@
+div#timesheets_parent {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+div.timesheets_header {
+    clear: left;
+    float: left;
+    width: 100%;
+}
+
+div.timesheets_header > * {
+    text-align: center;
+}
+
+div#day_header {
+    border-bottom: 1px solid #d7d7d7;
+    background-color: #eee;
+}
+
+div#day_header > div {
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    float: left;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+div#fields_header {
+    background-color: #eee;
+}
+
+div#fields_header > div {
+    font-weight: bold;
+    text-align: center;
+    float: left;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+div#add_here {
+    clear: left;
+    float: left;
+    width: 100%;
+}
+
+div#add_here > div {
+    float: left;
+    width: 100%;
+}
+
+div#t_footer {
+    clear: left;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    text-align: center;
+}
+
+.fleft { float: left; }
+.fright { float: right; }
+
+.four_pcent         { width: 4%;    }
+.five_pcent         { width: 5%;    }
+.seven_pcent        { width: 7%;    }
+.ten_pcent          { width: 10%;   }
+.fourteen_pcent     { width: 14%;   }
+.fifteen_pcent      { width: 15%;   }
+.forty_pcent        { width: 40%;   }
+.ninetynine_pcent   { width: 95%;   }
+.hundred_pcent      { width: 100%;  }
+
+.pointer { cursor: pointer; }
+
+.day { cursor: pointer; }
+.day:hover { background-color: #ffffdd; }
+
+.check_fail {
+    color: #fff;
+    background-color: #990000 !important;
+}
+
+.check_ok {
+    color: #fff;
+    background-color: #00cc00 !important;
+}
+
+.tooltip{
+	background-color: #FCF99F;
+	border: solid 2px #F5A822;
+	padding: 10px;
+}
+
+.dropdown {
+  width: 50px;
+  cursor: default;
+}
+
+.dropdown ul {
+  display: none;
+  position: absolute;
+  background-color: #f0f0f0;
+  color: black;
+  list-style: none;
+  min-width: 70px;
+  max-width: 200px;
+  max-height: 200px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  border: solid 1px #cccccc;
+}
+
+.dropdown ul li {
+  display: block;
+  padding: 0.2em;
+  text-align: left;
+}
+
+div.dropdown:hover ul {
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+
+div.dropdown ul li.issue:hover {
+  background-color: #c0c0f0;
+  cursor: pointer;
+}
+
+.dropdownvalue {
+	
+}
+
+.dropdownvalue:hover {
+	cursor: pointer;
+}
+
+.dropdown li.version {
+	color: #000000;
+	font-weight: bold;
+	cursor: default;
+}
+
+.dropdown li.issue {
+	color: #777777;
+	padding-left: 20px;
+}

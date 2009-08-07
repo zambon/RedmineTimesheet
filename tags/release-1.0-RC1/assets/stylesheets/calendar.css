@@ -1,0 +1,44 @@
+table
+{
+	width: 100%;
+}
+
+table th
+{
+	background-color: #aaa;
+}
+
+table#calendar td
+{
+	width: 14%;
+	font-size: 12px;
+}
+
+table#calendar
+{
+	background-color: #ddd;
+	width: 100%;
+}
+
+table.cal div span {
+    font-size: 20px;
+    text-align: center;
+    display: block;
+}
+
+div.bold
+{
+	font-weight: bold;
+	background-color: white;
+	border: dotted 1px black;
+}
+
+.weekday
+{
+	background-color: #ccc;
+}
+
+.weekend
+{
+	background-color: #bbb;
+}

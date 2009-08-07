@@ -1,0 +1,88 @@
+
+
+<div id="calendar_container">
+	
+<%= link_to "Export to Excel", :controller => 'timesheet', :action => 'export_to_excel', :month => @month %>
+<br />
+<table id="calendar" class="cal">
+	<thead>
+		<tr>
+			<th colspan="7">
+				
+				<span class="pointer" onclick="<%= remote_function(:url => {:action => 'refresh_calendar'}, :with => "'new_month=#{@month}&new_year=#{@year - 1}'" ) %>">
+					<
+				</span>
+				
+				<%= @year %>
+				
+				<span class="pointer" onclick="<%= remote_function(:url => {:action => 'refresh_calendar'}, :with => "'new_month=#{@month}&new_year=#{@year + 1}'" ) %>">
+					>
+				</span>
+				
+			</th>
+		</tr>
+		<tr>
+			<th colspan="7">
+				
+				<span class="pointer" onclick="<%= remote_function(:url => {:action => 'refresh_calendar'}, :with => "'new_month=#{@month - 1}&new_year=#{@year}'" ) %>">
+					<
+				</span>
+				
+				<%= @month_name %>
+				
+				<span class="pointer" onclick="<%= remote_function(:url => {:action => 'refresh_calendar'}, :with => "'new_month=#{@month + 1}&new_year=#{@year}'" ) %>">
+					>
+				</span>
+				
+				<input type="hidden" name="month" value="<%= @month %>" />
+			</th>
+		</tr>
+		<tr>
+			<th> Sunday		</th>
+			<th> Monday		</th>
+			<th> Tuesday	</th>
+			<th> Wednesday	</th>
+			<th> Thursday	</th>
+			<th> Friday		</th>
+			<th> Saturday	</th>
+		</tr>
+	</thead>
+	<% i = 0 %>
+	<% while @count <= @lastday %>
+	
+		<% if i%7 == 0 %>
+			<tr style="height: 50px">
+		<% end %>
+		
+			<td class= <% if i%7 == 0 || i%7 == 6 %> "odd" <% else %> "even" <% end %>>
+				
+				<% if @count > 0 %>
+				<% today = Date.new(@year, @month, @count) %>
+					<div id="day_<%= @count.to_s %>" <% if today == Date.today %> class="bold day" <% end %> <% if today <= Date.today %> class="day" onclick="<%= remote_function(:url => {:action => 'refresh_timesheets'}, :with => "'date=#{today}&datestr=#{today.strftime('%A, %d %B %Y')}'" ) %>" <% end %> style="height: 50px;">
+						<%= @count %>
+						<% timesheets = Timesheet.find(:all, :conditions => { :date => today, :user_id => User.current }) %>
+						<% total_minutes = 0 %>
+						<% timesheets.each do |t| %>
+						<% 	total_minutes += t.minutes %>
+						<% end %>
+						<% if total_minutes > 0 %>
+						<span><%= "%02d" % (total_minutes/60) %>:<%= "%02d" % (total_minutes.modulo(60)) %></span>
+						<% end %>
+					</div>
+				<% else %>
+					<div>
+					</div>
+				<% end %>
+				
+			</td>
+			
+		<% if i%7 == 6 %>
+			</tr>
+		<% end %>
+		
+		<% i += 1 %>
+		
+	<% @count += 1 %>
+	<% end %>
+</table>
+</div>

@@ -1,0 +1,19 @@
+
+<div class="dropdown">
+	<input type="hidden" name="issue_id" value="0">
+	<span class="dropdownvalue">---</span>
+	<ul>
+		<li class="issue" value="0" tipValue="Not related to any issue" onmouseover="showTip(Event.extend(event));" onmouseout="$('tip').hide();" onclick="selectValue(Event.extend(event));">---</li>
+		<li class="version">None</li>
+		<% last_group = 0 %>
+		<% @issues.each do |issue| %>
+			<% if issue.fixed_version_id != last_group && issue.fixed_version_id != nil %>
+			<li class="version"><%= Version.find(:first, :conditions => {:id => issue.fixed_version_id}).name %></li>
+			<% last_group = issue.fixed_version_id %>
+			<% end %>
+			
+			<li class="issue" value="<%= issue.id %>" tipValue="<%= issue.subject %>" onmouseover="showTip(Event.extend(event));" onmouseout="$('tip').hide();" onclick="selectValue(Event.extend(event));"><%= issue.id %></li>
+			
+		<% end %>
+	</ul>
+</div>

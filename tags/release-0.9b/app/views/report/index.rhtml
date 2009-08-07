@@ -1,0 +1,150 @@
+<% content_for :header_tags do %>
+	<%= stylesheet_link_tag 'reports.css', :plugin => 'redmine_timesheet' %>
+<% end %>
+
+<div class="contextual icon" style="background: url(../plugin_assets/redmine_timesheet/images/add.png) no-repeat 0 40%;">
+	<%= link_to 'Timesheet', {:controller => 'timesheet', :action => 'index'} %>
+</div>
+
+<h2>
+	Timesheet Reports
+</h2>
+
+<% selected_tab = "Consolidation" %>
+
+<div class="tabs">
+<ul>
+	<li><%= link_to l("Consolidation"), { :tab => "Consolidation" },
+                                    :id => "tab-Consolidation",
+                                    :class => ("Consolidation" != selected_tab ? nil : 'selected'),
+                                    :onclick => "showTab('Consolidation'); this.blur(); return false;" %></li>
+
+	<li><%= link_to l("View Timesheets"), { :tab => "View_Timesheets" },
+                                    :id => "tab-View_Timesheets",
+                                    :class => ("View_Timesheets" != selected_tab ? nil : 'selected'),
+                                    :onclick => "showTab('View_Timesheets'); this.blur(); return false;" %></li>
+
+</ul>
+</div>
+
+<div id="tab-content-Consolidation" class="tab-content" style="<%= "Consolidation" != selected_tab ? 'display:none' : nil %>">
+	<% form_remote_tag :url => {:controller => "report", :action => "build_report"} do %>
+		<div id="parameters" class="parameters">
+			<fieldset id="filters" class="left fieldset" style="height: 160px">
+				<legend>Filters</legend>
+					<div class="left_field">
+						<%= label 'filter', 'data', 'Data: ', :class => 'report_label' %> <br />
+						<select name="filter[data]" class="report_select">
+							<option value="0">--- All time ---</option>
+							<option value="<%= Date.today().year() * 100 + Date.today().mon() %>">Current Month</option>
+							<option value="<%= Date.today().year() * 100 + (Date.today()<<(1)).mon() %>">Last Month</option>
+							<%
+								data = Date.today()<<(2)
+								dataInicio = Date.civil(2009, 1, 1)
+								puts dataInicio
+								while data >= dataInicio
+							%>
+								<option value="<%= data.year() * 100 + data.mon() %>"><%= data.mon().to_s + " / " + data.year().to_s %></option>
+							<%
+									data = data<<(1)
+								end
+							%>
+						</select><br /><br /><br />
+						<%= label 'filter', 'project', 'Project: ', :class => 'report_label' %> <br />
+			
+						<%= select("filter", "project", @projects.collect {|p| [ p.name, p.id ] }, {:prompt => 'All projects'}, {:class => 'report_select'}) %>
+			
+					</div>
+					<div class="right_field">
+						<%= label 'filter', 'user', 'User: ', :class => 'report_label' %> <br />
+						<%= select("filter", "user", @users.collect {|p| [ p.name, p.id ] }, {:prompt => 'All users'}, {:class => 'report_select'}) %>
+						<br /><br /><br />
+						<%= label 'filter', 'activity', 'Activity: ', :class => 'report_label' %> <br />
+						<%= select("filter", "activity", @enumerations.collect {|p| [ p.name, p.id ] }, {:prompt => 'All activities'}, {:class => 'report_select'}) %>
+					</div>
+			</fieldset>
+			<fieldset id="groups" class="right fieldset" style="height: 160px">
+				<legend>Grouping</legend>
+				<div class="left_field">
+					<%= label 'group', 'type', 'Group by: ', :class => 'report_label' %> <br />
+					<%= select("group", "types", %w[Activity Issue Project User], {:prompt => 'none'}, {:class => 'report_select', :onchange => 'AddGrouping(this);', :id => 'selectGrouping'}) %>
+				
+					<%= link_to_function 'clear', '$("selected_grouping").innerHTML = "&nbsp;"; window.nestedGrouping = 0; $("selectGrouping").selectedIndex = 0;', :class => 'icon icon-reload' %>
+				
+				</div>
+				<div class="right_field">
+					<div id="selected_grouping" class="grouping_view">
+			
+					</div>
+				</div>
+			</fieldset>
+		</div>
+		<%= submit_tag 'Build', :class => 'submit_button' %>
+	<% end %>
+	
+	<div id="results" class="results_content">
+
+	</div>
+</div>
+
+
+<div id="tab-content-View_Timesheets" class="tab-content" style="<%= "View_Timesheets" != selected_tab ? 'display:none' : nil %>">
+	<% form_remote_tag :url => {:controller => "report", :action => "show_timesheet"} do %>
+		<div id="timesheet_parameters" class="parameters">
+			<fieldset id="filters" class="left fieldset" style="height: 160px">
+				<legend>View Timesheet</legend>
+					<div class="left_field">
+						<%= label 'filter', 'data', 'Data: ', :class => 'report_label' %> <br />
+						<select name="filter[data]" class="report_select">
+							<option value="<%= Date.today().year() * 100 + Date.today().mon() %>" selected = "true">Current Month</option>
+							<option value="<%= Date.today().year() * 100 + (Date.today()<<(1)).mon() %>">Last Month</option>
+							<%
+								data = Date.today()<<(2)
+								dataInicio = Date.civil(2009, 1, 1)
+								puts dataInicio
+								while data >= dataInicio
+							%>
+								<option value="<%= data.year() * 100 + data.mon() %>"><%= data.mon().to_s + " / " + data.year().to_s %></option>
+							<%
+									data = data<<(1)
+								end
+							%>
+						</select><br /><br /><br />
+		
+					</div>
+					<div class="right_field">
+						<%= label 'filter', 'user', 'User: ', :class => 'report_label' %> <br />
+						<%= select("filter", "user", @users.collect {|p| [ p.name, p.id ] }, {}, {:class => 'report_select'}) %>
+					</div>
+			</fieldset>
+		</div>
+		<%= submit_tag 'Show', :class => 'submit_button' %>
+	<% end %>
+	
+	<div id="timesheets" class="results_content">
+
+	</div>
+</div>
+
+
+
+
+
+
+<script type="text/javascript">
+	window.nestedGrouping = 0;
+
+	function AddGrouping(obj){
+		var value = obj.options[obj.selectedIndex].value;
+		if($$('div[groupvalue=' + value.toLowerCase() + ']').length > 0){
+			return;
+		}
+		var margin = 20 * window.nestedGrouping;
+		var obj = new Element('div', {'groupvalue': value.toLowerCase(), 'class': 'grouping_value', 'style': 'margin-left: ' + margin + 'px'});
+		obj.update(value);
+		var objHidden = new Element('input', {'type': 'hidden', 'name': 'group[type][' + window.nestedGrouping + ']', 'value': value});
+		obj.appendChild(objHidden);
+		$('selected_grouping').appendChild(obj);
+		window.nestedGrouping++;
+	}
+</script>

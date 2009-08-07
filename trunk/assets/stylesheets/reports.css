@@ -1,0 +1,92 @@
+.parameters{
+	position: relative;
+	width: 100%;
+	height: 200px;
+}
+
+.left{
+	position: relative;
+	float: left;
+	width: 40%;
+}
+
+.right{
+	position: relative;
+	float: right;
+	width: 55%;
+}
+
+.fieldset{
+	margin-bottom: 8px;
+	padding: 0.7em;
+}
+
+
+
+.report_label{
+	
+}
+
+.report_select{
+	width: 200px;
+}
+
+.right_field{
+	position: relative;
+	float: right;
+}
+
+.left_field{
+	position: relative;
+	float: left;
+}
+
+.grouping_view{
+	width: 300px;
+}
+
+.grouping_value{
+	border: solid 1px #c9c9c9;
+	padding: 5px;
+	width: 100px;
+}
+
+.submit_button{
+	float: right;
+}
+
+.results_content{
+	margin-top: 50px;
+}
+
+.report_td{
+	padding: 5px;
+}
+
+.report_td_total{
+	padding: 5px;
+	font-weight: bold;
+	text-align: right;
+}
+
+.header_row{
+	background-color: #c9c9c9;
+}
+
+.header_cell{
+	width: 200px;
+}
+
+.report_table{
+	width: 100%;
+}
+
+.report_tr_total{
+	background-color: #c9c9c9;
+}
+
+.percent{
+	width: 10%;
+}
+
+

@@ -1,0 +1,10 @@
+
+
+<select name="issue_id">
+	<option value="0">--</option>
+	<% @issues.each do |issue| %>
+		<option value="<%= issue.id %>" tipValue="<%= issue.subject %>" onmouseover="showTip(Event.extend(event))" onmouseout="$('tip').hide();"><%= issue.id %></option>
+	<% end %>
+</select>
+
+

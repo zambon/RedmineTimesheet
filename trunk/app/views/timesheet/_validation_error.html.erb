@@ -1,0 +1,22 @@
+<% if errors.on(:project) || errors.on(:begin) || errors.on(:end) || errors.on(:enumeration) || errors.on(:issue)  %>
+<div class="timesheets_header">
+	<%= hidden_field_tag 'timesheet_id', timesheet.id %>
+	<%= hidden_field_tag 'date', @date %>
+	<div class="fleft fifteen_pcent">	<%= errors.on "project" %> &nbsp; </div>
+	<div class="fleft five_pcent">		<%= errors.on "begin" %> &nbsp; </div>
+	<div class="fleft five_pcent">		<%= errors.on "end" %> &nbsp; </div>
+	<div class="fleft fifteen_pcent">	<%= errors.on "enumeration" %> &nbsp; </div>
+	<div class="fleft five_pcent">		<%= errors.on "issue" %> &nbsp; </div>
+	<div class="fleft forty_pcent"> &nbsp; </div>
+	<div class="fleft fifteen_pcent"> &nbsp; </div>
+</div>
+<% end %>
+<% if errors.on_base %>
+<div class="timesheets_header">
+	<ul>
+		<% errors.on_base.each do |error| %>
+		<li> <%= error %> </li>
+		<% end %>
+	</ul>
+</div>
+<% end %>

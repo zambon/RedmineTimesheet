@@ -1,0 +1,85 @@
+<% if action == "retrieve" %>
+
+<div id="<%= "retrieve_timesheet_" + timesheet.id.to_s %>">
+	<div class="timesheets_header">
+	<% form_remote_tag :url => {:controller => "timesheet", :action => "edit_timesheet"} do %>
+		<%= hidden_field_tag 'timesheet_id', timesheet.id %>
+		<%= hidden_field_tag 'date', @date %>
+			<div class="fleft fifteen_pcent">	<%= timesheet.project.name %>			 </div>
+			<div class="fleft five_pcent">		<%= timesheet.begin.strftime('%H:%M') %> </div>
+			<div class="fleft five_pcent">		<%= timesheet.end.strftime('%H:%M') %>	 </div>
+			<div class="fleft fifteen_pcent">	<%= timesheet.enumeration.name %>		 </div>
+  			<div class="fleft five_pcent"><div style="width: 50px"><span class="pointer" <% if timesheet.issue_id > 0 %>tipValue="<%= Issue.find(timesheet.issue_id).subject %>" onmouseover="showTip(Event.extend(event))" onmouseout="$('tip').hide();"<% end %>><% if timesheet.issue_id > 0 %><%= timesheet.issue_id.to_s.strip %><% else %>---<% end %></span></div></div>
+			<div class="fleft forty_pcent">		<%= timesheet.obs %> &nbsp;				 </div>
+			<div class="fleft seven_pcent">		<a class="pointer icon-edit" style="background-repeat: no-repeat; padding-left: 15px; padding-top: 2px;" onclick="$(this).up('form').onsubmit();">edit</a></div>
+			<div class="fleft seven_pcent" onclick="if(confirm('Are you sure?')){<%= remote_function(:url => {:action => 'delete_timesheet'}, :with => "'timesheet_id=#{timesheet.id}'" ) %>}"> <a class="pointer icon-del" style="background-repeat: no-repeat; padding-left: 15px; padding-top: 2px;">delete</a> </div>
+	<% end %>
+	</div>
+	<div id="<%= "validation_error_" + timesheet.id.to_s %>" class="timesheets_header">
+	</div>
+</div>
+
+<% elsif action == "edit"  %>
+
+<div id="<%= "edit_timesheet_" + timesheet.id.to_s %>">
+	<div class="timesheets_header">
+	<% form_remote_tag :url => {:controller => "timesheet", :action => "save_timesheet"}, :before => "clear_error_times()" do %>
+		<%= hidden_field_tag 'timesheet_id', timesheet.id %>
+		<%= hidden_field_tag 'date', @date %>
+			<div class="fleft fifteen_pcent">	<%= select_tag 'project_id', options_for_select([["", "0"]] + @projects.collect {|p| [ p.name, p.id ]}, [ Project.find(timesheet.project_id).name, timesheet.project_id ]), :onchange => 'get_issues("select_issue_' +  timesheet.id.to_s + '", this.options[this.selectedIndex].value, "' + url_for({:controller => 'timesheet', :action => 'get_issues'}) + '", ' + timesheet.id.to_s + ');', :select => 'project' , :style => 'width: 50%;' %> </div>
+			<div class="fleft five_pcent">		<%= text_field_tag 'tbegin', timesheet.begin.strftime('%H:%M'), :size => 5, :onkeyup => "validate_time(this)" %> </div>
+			<div class="fleft five_pcent">		<%= text_field_tag 'tend', timesheet.end.strftime('%H:%M'), :size => 5, :onkeyup => "validate_time(this)" %> </div>
+			<div class="fleft fifteen_pcent">	<%= select_tag 'enumeration_id', options_for_select([["", "0"]] + @enumerations.collect {|e| [ e.name, e.id ]}, [ Enumeration.find(timesheet.enumeration_id).name, timesheet.enumeration_id]), :style => 'width: 50%;' %> </div>
+			<div id="select_issue_<%= timesheet.id.to_s %>" class="fleft five_pcent">	
+
+				<div class="dropdown">
+					<input type="hidden" name="issue_id" value="<%= timesheet.issue_id %>">
+					<span class="dropdownvalue"><% if timesheet.issue_id > 0 %> <%= timesheet.issue_id %> <% else %> --- <% end %></span>
+					<ul>
+						<li class="issue" value="0" tipValue="Not related to any issue" onmouseover="showTip(Event.extend(event));" onmouseout="$('tip').hide();" onclick="selectValue(Event.extend(event));">---</li>
+						<li class="version">None</li>
+						<% last_group = 0 %>
+						<% @issues.each do |issue| %>
+							<% if issue.fixed_version_id != last_group && issue.fixed_version_id != nil %>
+							<li class="version"><%= Version.find(:first, :conditions => {:id => issue.fixed_version_id}).name %></li>
+							<% last_group = issue.fixed_version_id %>
+							<% end %>
+
+							<li class="issue" value="<%= issue.id %>" tipValue="<%= issue.subject %>" onmouseover="showTip(Event.extend(event));" onmouseout="$('tip').hide();" onclick="selectValue(Event.extend(event));"><%= issue.id %></li>
+
+						<% end %>
+					</ul>
+				</div>
+
+			</div>
+			<div class="fleft forty_pcent">		<%= text_field_tag 'obs', timesheet.obs, :maxlength => 255, :size => 50 %> </div>
+			<div class="fleft seven_pcent">		<a class="pointer icon-checked" style="background-repeat: no-repeat; padding-left: 15px; padding-top: 2px;" onclick="beforeSubmit(this);">save</a> </div>
+			<div class="fleft seven_pcent" onclick="if(confirm('Changes will be lost. Proceed?')){<%= remote_function(:url => {:action => 'retrieve_timesheet'}, :with => "'timesheet_id=#{timesheet.id}'" ) %>}"> <a class="pointer icon" style="background: url(../images/false.png) no-repeat 15% 40%;">cancel</a> </div>
+	<% end %>
+	</div>
+	<div id="<%= "validation_error_" + timesheet.id.to_s %>" class="timesheets_header">
+	</div>
+</div>
+
+<% elsif action == "new" %>
+
+<div id="<%= "new_timesheet_" + @new_timesheet_id %>">
+	<div class="timesheets_header">
+	<% form_remote_tag :url => {:controller => "timesheet", :action => "save_timesheet"}, :before => "clear_error_times()" do %>
+		<%= hidden_field_tag 'new_timesheet_id', @new_timesheet_id %>
+		<%= hidden_field_tag 'date', @date %>
+			<div class="fleft fifteen_pcent">	<%= select_tag 'project_id', options_for_select([["", "0"]] + @projects.collect {|p| [ p.name, p.id ]}), :onchange => 'get_issues("select_issue_' +  @new_timesheet_id + '", this.options[this.selectedIndex].value, "' + url_for({:controller => 'timesheet', :action => 'get_issues'}) + '", 0);', :select => 'project', :style => 'width: 50%;' %> </div>
+			<div class="fleft five_pcent">		<%= text_field_tag 'tbegin', '', :size => 5, :onkeyup => "validate_time(this)" %> </div>
+			<div class="fleft five_pcent">		<%= text_field_tag 'tend', '', :size => 5, :onkeyup => "validate_time(this)" %> </div>
+			<div class="fleft fifteen_pcent">	<%= select_tag 'enumeration_id', options_for_select([["", "0"]] + @enumerations.collect {|e| [ e.name, e.id ]}), :style => 'width: 50%;' %> </div>
+			<div id="select_issue_<%= @new_timesheet_id %>" class="fleft five_pcent"> &nbsp; </div>
+			<div class="fleft forty_pcent">		<%= text_field_tag 'obs', '', :maxlength => 255, :size => 50 %> </div>
+			<div class="fleft seven_pcent">		<a class="pointer icon-checked" style="background-repeat: no-repeat; padding-left: 15px; padding-top: 2px;" onclick="beforeSubmit(this);">save</a> </div>
+			<div class="pointer fleft seven_pcent" onclick="if(confirm('Unsaved line. Proceed?')){$('new_timesheet_<%= @new_timesheet_id %>').remove();}"> <a class="pointer icon" style="background: url(../images/false.png) no-repeat 15% 40%;">cancel</a> </div>
+	<% end %>
+	</div>
+	<div id="<%= "validation_error_" + @new_timesheet_id %>" class="timesheets_header">
+	</div>
+</div>
+
+<% end %>

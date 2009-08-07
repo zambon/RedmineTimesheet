@@ -1,0 +1,26 @@
+<div id="slider">
+	<div id="slider_content">
+		<div id="day_header" class="timesheets_header">
+			<div class="ninetynine_pcent"> <%= datestr %> </div>
+			<div class="four_pcent pointer" onclick="if (confirm('Unsaved changes will be lost. Proceed?')) Effect.toggle('slider', 'slide', {duration:0.5});"> close </div>
+		</div>
+
+		<div id="fields_header" class="timesheets_header">
+			<div class="fifteen_pcent">		Project		</div>
+			<div class="five_pcent">		Begin		</div>
+			<div class="five_pcent">		End			</div>
+			<div class="fifteen_pcent">		Activity	</div>
+			<div class="five_pcent">		Issue		</div>
+			<div class="forty_pcent">		Comments	</div>
+			<div class="fourteen_pcent">	Actions		</div>
+		</div>
+
+		<div id="add_here">
+	
+		</div>
+
+		<div id="t_footer">
+			<a href="#" onclick="<%= remote_function(:url => {:action => 'new_timesheet'}, :with => "'date=#{date}'") %>" class="icon icon-add" style="background: url(../images/add.png) no-repeat 0 60%;">New</a>
+		</div>
+	</div>
+</div>

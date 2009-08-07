@@ -1,0 +1,29 @@
+<% content_for :header_tags do %>
+	<%= stylesheet_link_tag 'calendar.css', :plugin => 'redmine_timesheet' %>
+    <%= stylesheet_link_tag 'timesheets.css', :plugin => 'redmine_timesheet' %>
+	<%= javascript_include_tag 'timesheets.js', :plugin => 'redmine_timesheet' %>
+<% end %>
+
+<% if User.current.admin %>
+<div class="contextual icon" style="background: url(../plugin_assets/redmine_timesheet/images/add.png) no-repeat 0 40%;">
+	<%= link_to 'Reports', {:controller => 'report', :action => 'index'} %>
+</div>
+<% end %>
+
+<h2>
+	<%= @username %>'s Timesheet
+</h2>
+
+<div id="timesheets_parent"></div>
+<br />
+<%= render :partial => 'calendar' %>
+
+<div id="tip" class="tooltip" style="display: none; position: absolute;"></div>
+
+<div>
+	<% @related_projects.each do |project_id| %>
+	
+	<input type="hidden" name="project_relation" id="project_relation_<%= project_id %>" value="" />
+	
+	<% end %>
+</div>

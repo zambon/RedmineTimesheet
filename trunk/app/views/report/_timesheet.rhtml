@@ -1,0 +1,36 @@
+
+<table class="list">
+	<thead>
+		<tr class="header_row">
+			<td>Date</td>
+			<td>Project</td>
+			<td>Begin</td>
+			<td>End</td>
+			<td>Total</td>
+			<td>Activity</td>
+			<td>Issue</td>
+			<td>Obs</td>
+		</tr>
+	</thead>
+	<tbody>
+		<% rowNumber = 0 %>
+		<% @results.each do |item| %>
+		<% if rowNumber % 2 == 0 %>
+			<tr class="even">
+		<% else %>
+			<tr class="odd">
+		<% end %>
+				<td><%= item.date.strftime('%d/%m/%Y') %></td>
+				<td><%= item.projectname %></td>
+				<td><%= item.begin.strftime('%H:%M') %></td>
+				<td><%= item.end.strftime('%H:%M') %></td>
+				<td><%= "%02d" % ((item.total.to_i)/60) %>:<%= "%02d" % (item.total.to_i.modulo(60)) %></td>
+				<td><%= item.activity %></td>
+				<td><%= item.issuenumber %></td>
+				<td><%= item.obs %></td>
+			</tr>
+		<% rowNumber += 1 %>
+		<% end %>
+	</tbody>
+</table>
+<%= link_to "Export to Excel", :controller => 'report', :action => 'timesheet_export_to_excel', :month => @month, :user => @user %>

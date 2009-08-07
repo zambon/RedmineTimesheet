@@ -1,0 +1,9 @@
+<%= day %>
+<% timesheets = Timesheet.find(:all, :conditions => { :date => today, :user_id => User.current }) %>
+<% total_minutes = 0 %>
+<% timesheets.each do |t| %>
+<% 	total_minutes += t.minutes %>
+<% end %>
+<% if total_minutes > 0 %>
+<span><%= "%02d" % (total_minutes/60) %>:<%= "%02d" % (total_minutes.modulo(60)) %></span>
+<% end %>
